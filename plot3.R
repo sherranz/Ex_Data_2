@@ -1,8 +1,19 @@
 require("ggplot2")
 require("plyr")
+
 if(!exists("NEI")){
-  NEI <<- readRDS("summarySCC_PM25.rds")
-  SCC <<- readRDS("Source_Classification_Code.rds")
+  RDS1<-"summarySCC_PM25.rds"
+  RDS2<-"Source_Classification_Code.rds"
+  if(!file.exists(RDS1)){
+    FILE<-"exdata-data-NEI_data.zip"
+    if(!file.exists(FILE)){
+      URL<-"https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2FNEI_data.zip"
+      download.file(url = URL, destfile = FILE, method = "curl")
+    }
+    unzip(FILE)
+  }
+  NEI <<- readRDS(RDS1)
+  SCC <<- readRDS(RDS2)
 }
 
 NEI_baltimore<-NEI[NEI$fips==24510,]
